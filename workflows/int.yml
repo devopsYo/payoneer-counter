@@ -10,7 +10,7 @@ pool:
 jobs:
 - job: Init_Vars
   variables:
-    tag: $[ coalesce(variables['parameters.tag'], variables['Build.SourceBranch']) ]
+    tag: $[ coalesce(variables['parameters.tag'], variables['Build.SourceBranchName']) ]
   steps:
   - script: echo "##vso[task.setvariable variable=tag;isOutput=true]$(tag)"
     name: InitTag

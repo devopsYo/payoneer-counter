@@ -27,7 +27,7 @@ jobs:
   - script: docker image push $(DOCKERHUB_USER)/payoneer-counter:$(tag)
     displayName: 'Push Docker Image'
 - job: CD
-  dependsOn: CI
+  dependsOn: Init_Vars, CI
   variables:
     tag: $[ dependencies.Init_Vars.outputs['InitTag.tag'] ]
   steps:

@@ -7,6 +7,8 @@ pool:
 jobs:
 - job: CI
   steps:
+  - script: whoami
+    displayName: 'whoami'
   - script: docker build -t devopsyo/payoneer-counter .
     displayName: 'Push Docker Image'
 - job: CD

@@ -6,7 +6,7 @@ jobs:
   steps:
   - script: docker build -t devopsyo/payoneer-counter .
     displayName: 'Build Docker Image'
-  - script: docker login -u devopsyo
+  - script: docker login -u $(DOCKERHUB_USER) -p $(DOCKERHUB_PWD)
     displayName: 'Login Docker Image'
   - script: docker image push devopsyo/payoneer-counter
     displayName: 'Push Docker Image'

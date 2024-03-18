@@ -1,6 +1,3 @@
-trigger:
-- 1.0.x
-
 pool:
   name: Default
 
@@ -8,6 +5,10 @@ jobs:
 - job: CI
   steps:
   - script: docker build -t devopsyo/payoneer-counter .
+    displayName: 'Build Docker Image'
+  - script: docker login -u devopsyo
+    displayName: 'Login Docker Image'
+  - script: docker image push devopsyo/payoneer-counter
     displayName: 'Push Docker Image'
 - job: CD
   dependsOn: CI

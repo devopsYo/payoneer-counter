@@ -1,17 +1,27 @@
+parameters:
+- name: tag
+  displayName: Tag
+  type: string
+  default: 1.0.x
+
 pool:
   name: Default
 
 jobs:
+- job: Init vars
+  steps:
+  - script: echo "##vso[task.setvariable variable=tag;isOutput=true]${{ parameters.tag || Build.SourceBranch }}"
+    displayName: 'Init Tag'
 - job: CI
   steps:
-  - script: docker build -t devopsyo/payoneer-counter .
-    displayName: 'Build Docker Image'
   - script: docker login -u $(DOCKERHUB_USER) -p $(DOCKERHUB_PWD)
-    displayName: 'Login Docker Image'
-  - script: docker image push devopsyo/payoneer-counter
+    displayName: 'Login Dockerhub'
+  - script: docker build -t $(DOCKERHUB_USER)/payoneer-counter:${{ parameters.tag }} .
+    displayName: 'Build Docker Image'
+  - script: docker image push $(DOCKERHUB_USER)/payoneer-counter:${{ parameters.tag }}
     displayName: 'Push Docker Image'
 - job: CD
   dependsOn: CI
   steps:
-  - script: docker image pull devopsyo/payoneer-counter
+  - script: docker image pull $(DOCKERHUB_USER)/payoneer-counter:${{ parameters.tag }}
     displayName: 'Pull Docker Image'

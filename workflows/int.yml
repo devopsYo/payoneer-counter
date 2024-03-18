@@ -1,8 +1,8 @@
 trigger:
-- main
+- 1.0.x
 
 pool:
-  vmImage: ubuntu-latest
+  name: Default
 
 jobs:
 - job: Work

@@ -8,7 +8,7 @@ pool:
   name: Default
 
 jobs:
-- job: Init vars
+- job: Init_Vars
   variables:
     tag: $[ coalesce(variables['parameters.tag'], variables['Build.SourceBranch']) ]
   steps:

@@ -13,6 +13,7 @@ const accessLogStream = rfs.createStream(logFileName, {
   path: path.join(__dirname, 'log'),
 })
 
+//increment counterPost  for each request post
 app.use(morgan('tiny', {
   skip: (req, res) => req.method !== 'POST',
   stream: {
@@ -22,13 +23,15 @@ app.use(morgan('tiny', {
   }
 }))
 
+//log each request
 app.use(morgan('common', {
   stream: accessLogStream
 }))
 
 app.get('/counter', (req, res) => {
+  res.set('Version', '1.0.x');
   res.json({ count: postCounterInstance.value });
 });
 
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);

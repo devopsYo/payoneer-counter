@@ -38,7 +38,11 @@ jobs:
   steps:
   - script: docker image pull $(DOCKERHUB_USER)/$(IMAGE):$(tag)
     displayName: 'Pull Docker Image'
-  - script: docker rm -f $(docker ps -a --filter "ancestor=$(DOCKERHUB_USER)/$(IMAGE):$(tag)" -q)
+  - script: |
+      docker rm -f $(docker ps -a --filter "ancestor=$(DOCKERHUB_USER)/$(IMAGE):$(tag)" -q)
+      if [ -n "$containers" ]; then
+        docker rm $containers
+      fi
     displayName: 'Remove old containers'
   - script: docker run -d -v log:/app/log -p $(EXTERNAL_PORT):$(INTERNAL_PORT) $(DOCKERHUB_USER)/$(IMAGE):$(tag)
     displayName: 'Start Container'

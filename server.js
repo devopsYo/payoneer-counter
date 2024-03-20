@@ -29,7 +29,7 @@ app.use(morgan('common', {
 }))
 
 app.get('/counter', (req, res) => {
-  res.set('Version', '1.0.x');
+  res.set('Version', '1.0.0');
   res.json({ count: postCounterInstance.value });
 });
 

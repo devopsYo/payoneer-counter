@@ -46,7 +46,11 @@ stages:
     steps:
     - script: docker image pull $(DOCKERHUB_USER)/$(IMAGE):$(tag)
       displayName: 'Pull Docker Image'
-    - script: docker rm $(docker ps -q --filter "status=running" --filter "expose=$(EXTERNAL_PORT)")
+    - script: |
+        containers=$(docker ps -q --filter "status=running" --filter "expose=$(EXTERNAL_PORT)") ; \
+        if [ -n "$containers" ]; then \
+          docker rm -f $containers ; \
+        fi ; \
       displayName: 'Remove running container'
     - script: docker run --restart=always -d -v log:/app/log -p $(EXTERNAL_PORT):$(INTERNAL_PORT) $(DOCKERHUB_USER)/$(IMAGE):$(tag)
       displayName: 'Start Container'

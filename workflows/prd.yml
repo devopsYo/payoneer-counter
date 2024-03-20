@@ -17,10 +17,10 @@ jobs:
   - script: docker image pull $(DOCKERHUB_USER)/$(IMAGE):${{ parameters.tag }}
     displayName: 'Pull Docker Image'
   - script: |
-      containers=$(docker ps -a --filter "ancestor=$(DOCKERHUB_USER)/$(IMAGE):${{ parameters.tag }}" -q)
-      if [ -n "$containers" ]; then
-        docker rm -f $containers
-      fi
-    displayName: 'Remove old containers'
+      containers=$(docker ps -q --filter "status=running" --filter "expose=$(EXTERNAL_PORT)") ; \
+      if [ -n "$containers" ]; then \
+        docker rm -f $containers ; \
+      fi ; \ 
+    displayName: 'Remove running container'
   - script: docker run --restart=always -d -v log:/app/log -p $(EXTERNAL_PORT):$(INTERNAL_PORT) $(DOCKERHUB_USER)/$(IMAGE):${{ parameters.tag }}
     displayName: 'Start Container'

@@ -1,12 +1,12 @@
-**Requirements**
+<ins>**Requirements**</ins>
 
 Nano Service Development
 
 Nano Service Deployment
 
-**Prerequisites**
+<ins>**Prerequisites**</ins>
 
-**Set-up connection to ec2 with putty**
+<ins>**Set-up connection to ec2 with putty**</ins>
 
 Session Creation
 
@@ -38,9 +38,9 @@ Installation agent Azure DevOps for the private runner
 
 
 
-**Tasks**
+<ins>**Tasks**</ins>
 
-**Development nano-service with express**
+<ins>**Development nano-service with express**<ins>
 
 **2 Morgan Middlewares:**
 
@@ -57,7 +57,7 @@ Log current counterPost in separate file
 
 Change it to each different version (docker image tag)
 
-**Set-up SCM Github**
+<ins>**Set-up SCM Github**</ins>
 
 Version Branch(= dev branch=master branch) TBD approach
 
@@ -77,7 +77,7 @@ At the end of cycle development, a version branch 2.0.x is created.
 
 
 
-**CI/CD Approach**
+<ins>**CI/CD Approach**</ins>
 
 In the job CI, an image docker with specifically version is created and pushed to dockerhub.
 
@@ -85,7 +85,7 @@ In the job CD, the image with specifically version is pulled and deployed(contai
 
 ![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/ci_cd.png?raw=true)
 
-**Volume Creation - Availability**
+<ins>**Volume Creation - Availability**</ins>
 
 Docker run -v log:/app/log
 
@@ -93,7 +93,7 @@ Docker run –restart=always
 
 
 
-**Effort to create a new service** –** depends on requirements
+<ins>**Effort to create a new service**</ins> –** depends on requirements
 
 **Future improvement :** 
 

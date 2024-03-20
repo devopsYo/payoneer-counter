@@ -10,30 +10,30 @@ Nano Service Deployment
 
 Session Creation
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.001.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/set_up_putty.png?raw=true)
 
 
 Convert .pem to .ppk
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.002.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/convert_pem_to_ppk.png?raw=true)
 
 
 Add SSH Authentication 
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.003.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/ssh_authentication.png?raw=true)
 
 
 Set-up ec2 – Format and Mount an attached Volume
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.004.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/format_mount_volume.png?raw=true)
 
 Ref: <https://docs.aws.amazon.com/ebs/latest/userguide/ebs-using-volumes.html>
 
 Installation agent Azure DevOps for the private runner
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.005.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/installation_agent.png?raw=true)
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.006.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/agent_running.png?raw=true)
 
 
 
@@ -44,16 +44,16 @@ Installation agent Azure DevOps for the private runner
 
 **2 Morgan Middlewares:**
 
-`              `Logs all requests in daily file access.log
+Logs all requests in daily file access.log
 
-`              `Log current counterPost in separate file
+Log current counterPost in separate file
 
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.007.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/sw_archi_counter_service.png?raw=true)
 
 <http://ec2-18-197-66-172.eu-central-1.compute.amazonaws.com/counter>
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.008.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/counter_service_running.png?raw=true)
 
 Change it to each different version (docker image tag)
 
@@ -61,13 +61,13 @@ Change it to each different version (docker image tag)
 
 Version Branch(= dev branch=master branch) TBD approach
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.009.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/branch_protection.png?raw=true)
 
 While cycle development, the dev is merging to the current version branch 1.0.x(it’ s the trunc).
 
 At the end of cycle development, a version branch 2.0.x is created.
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.010.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/git_ci_cd.png?raw=true)
 
 
 
@@ -83,7 +83,7 @@ In the job CI, an image docker with specifically version is created and pushed t
 
 In the job CD, the image with specifically version is pulled and deployed(container is started)
 
-![](Aspose.Words.4b77ed07-d2e6-4568-b9a6-692cf55a54bf.011.png)
+![](https://github.com/devopsYo/payoneer-counter/blob/feature/config-pipeline/doc/ci_cd.png?raw=true)
 
 **Volume Creation - Availability**
 

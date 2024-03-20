@@ -29,8 +29,8 @@ stages:
       displayName: 'Login Dockerhub'
     - script: docker build -t $(DOCKERHUB_USER)/$(IMAGE):$(tag) .
       displayName: 'Build Docker Image'
-    - script: docker image push $(DOCKERHUB_USER)/$(IMAGE):$(tag)
-      displayName: 'Push Docker Image'
+    #- script: docker image push $(DOCKERHUB_USER)/$(IMAGE):$(tag)
+    #  displayName: 'Push Docker Image'
   - job: CD
     dependsOn: 
     - Init_Vars

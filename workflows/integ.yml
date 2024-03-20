@@ -41,9 +41,9 @@ stages:
     - script: docker image pull $(DOCKERHUB_USER)/$(IMAGE):$(tag)
       displayName: 'Pull Docker Image'
     - script: |
-        docker rm -f $(docker ps -a --filter "ancestor=$(DOCKERHUB_USER)/$(IMAGE):$(tag)" -q)
+        containers=$(docker ps -a --filter "ancestor=$(DOCKERHUB_USER)/$(IMAGE):$(tag)" -q)
         if [ -n "$containers" ]; then
-          docker rm $containers
+          docker rm -f $containers
         fi
       displayName: 'Remove old containers'
     - script: docker run --restart=always -d -v log:/app/log -p $(EXTERNAL_PORT):$(INTERNAL_PORT) $(DOCKERHUB_USER)/$(IMAGE):$(tag)

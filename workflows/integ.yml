@@ -27,10 +27,14 @@ stages:
     steps:
     - script: docker login -u $(DOCKERHUB_USER) -p $(DOCKERHUB_PWD)
       displayName: 'Login Dockerhub'
+    - script:
+        docker rm $(docker ps -a --filter "ancestor=$(DOCKERHUB_USER)/$(IMAGE):$(tag)" -q)
+        docker rmi $(DOCKERHUB_USER)/$(IMAGE):$(tag)
+      displayName: 'Remove old containers'
     - script: docker build -t $(DOCKERHUB_USER)/$(IMAGE):$(tag) .
       displayName: 'Build Docker Image'
-    #- script: docker image push $(DOCKERHUB_USER)/$(IMAGE):$(tag)
-    #  displayName: 'Push Docker Image'
+    - script: docker image push $(DOCKERHUB_USER)/$(IMAGE):$(tag)
+      displayName: 'Push Docker Image'
   - job: CD
     dependsOn: 
     - Init_Vars
@@ -40,9 +44,6 @@ stages:
     steps:
     - script: docker image pull $(DOCKERHUB_USER)/$(IMAGE):$(tag)
       displayName: 'Pull Docker Image'
-    - script:
-        docker ps -a --filter "ancestor=$(DOCKERHUB_USER)/$(IMAGE):$(tag)" -q
-      displayName: 'Remove old containers'
     #- script: docker run --restart=always -d -v log:/app/log -p $(EXTERNAL_PORT):$(INTERNAL_PORT) $(DOCKERHUB_USER)/$(IMAGE):$(tag)
     #  displayName: 'Start Container'
   

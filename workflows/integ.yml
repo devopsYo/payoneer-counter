@@ -31,7 +31,7 @@ stages:
         if [ -n "$containers" ]; then \
           docker rm -f $containers ; \
         fi ; \
-    #    docker rmi $(DOCKERHUB_USER)/$(IMAGE):$(tag) ;
+        docker rmi $(DOCKERHUB_USER)/$(IMAGE):$(tag) ;
       displayName: 'Remove old images/containers'
     - script: docker build -t $(DOCKERHUB_USER)/$(IMAGE):$(tag) .
       displayName: 'Build Docker Image'

@@ -1,0 +1,56 @@
+variables:
+- group: payoneer-counter-variables-group
+
+parameters:
+- name: tag
+  displayName: Tag
+  type: string
+  default: 1.0.x
+
+pool:
+  name: Default
+
+stages:
+- stage: Build
+  jobs:
+  - job: Init_Vars
+    variables:
+      tag: $[ coalesce(variables['parameters.tag'], variables['Build.SourceBranchName']) ]
+    steps:
+    - script: echo "##vso[task.setvariable variable=tag;isOutput=true]$(tag)"
+      name: InitTag
+      displayName: 'Init Tag'
+  - job: CI
+    dependsOn: Init_Vars
+    variables:
+      tag: $[ dependencies.Init_Vars.outputs['InitTag.tag'] ]
+    steps:
+    - script: docker login -u $(DOCKERHUB_USER) -p $(DOCKERHUB_PWD)
+    - script: |
+        containers=$(docker ps -a --filter "ancestor=$(DOCKERHUB_USER)/$(IMAGE):$(tag)" -q) ; \
+        if [ -n "$containers" ]; then \
+          docker rm -f $containers ; \
+        fi ; \
+        docker rmi $(DOCKERHUB_USER)/$(IMAGE):$(tag) ;
+      displayName: 'Remove old images/containers'
+    - script: docker build -t $(DOCKERHUB_USER)/$(IMAGE):$(tag) .
+      displayName: 'Build Docker Image'
+    - script: docker image push $(DOCKERHUB_USER)/$(IMAGE):$(tag)
+      displayName: 'Push Docker Image'
+  - job: CD
+    dependsOn: 
+    - Init_Vars
+    - CI
+    variables:
+      tag: $[ dependencies.Init_Vars.outputs['InitTag.tag'] ]
+    steps:
+    - script: docker image pull $(DOCKERHUB_USER)/$(IMAGE):$(tag)
+      displayName: 'Pull Docker Image'
+    - script: |
+        docker ps -q --filter "status=running" | while read -r container_id; do \
+          docker port $container_id | grep -q "0.0.0.0:80" && docker rm -f $container_id ; \
+        done ; \
+      displayName: 'Remove running container'
+    - script: docker run --restart=always -d -v log:/app/log -p $(EXTERNAL_PORT):$(INTERNAL_PORT) $(DOCKERHUB_USER)/$(IMAGE):$(tag)
+      displayName: 'Start Container'
+  

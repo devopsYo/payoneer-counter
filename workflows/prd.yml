@@ -1,0 +1,25 @@
+variables:
+- group: payoneer-counter-variables-group
+
+parameters:
+- name: tag
+  displayName: Tag
+  type: string
+  default: 1.0.x
+
+pool:
+  name: Default
+
+
+jobs:
+- job: CD
+  steps:
+  - script: docker image pull $(DOCKERHUB_USER)/$(IMAGE):${{ parameters.tag }}
+    displayName: 'Pull Docker Image'
+  - script: |
+      docker ps -q --filter "status=running" | while read -r container_id; do \
+        docker port $container_id | grep -q "0.0.0.0:80" && docker rm -f $container_id ; \
+      done ; \
+    displayName: 'Remove running container'
+  - script: docker run --restart=always -d -v log:/app/log -p $(EXTERNAL_PORT):$(INTERNAL_PORT) $(DOCKERHUB_USER)/$(IMAGE):${{ parameters.tag }}
+    displayName: 'Start Container'

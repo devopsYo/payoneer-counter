@@ -40,9 +40,8 @@ stages:
     steps:
     - script: docker image pull $(DOCKERHUB_USER)/$(IMAGE):$(tag)
       displayName: 'Pull Docker Image'
-    - script: |
-        containers=$(docker ps -a --filter "ancestor=$(DOCKERHUB_USER)/$(IMAGE):$(tag)" -q)
-        echo "$containers"
+    - script:
+        docker ps -a --filter "ancestor=$(DOCKERHUB_USER)/$(IMAGE):$(tag)" -q
       displayName: 'Remove old containers'
     #- script: docker run --restart=always -d -v log:/app/log -p $(EXTERNAL_PORT):$(INTERNAL_PORT) $(DOCKERHUB_USER)/$(IMAGE):$(tag)
     #  displayName: 'Start Container'

@@ -17,10 +17,9 @@ jobs:
   - script: docker image pull $(DOCKERHUB_USER)/$(IMAGE):${{ parameters.tag }}
     displayName: 'Pull Docker Image'
   - script: |
-      containers=$(docker ps -q --filter "status=running" --filter "expose=$(EXTERNAL_PORT)") ; \
-      if [ -n "$containers" ]; then \
-        docker rm -f $containers ; \
-      fi ; \ 
+      docker ps -q --filter "status=running" | while read -r container_id; do \
+        docker port $container_id | grep -q "0.0.0.0:80" && docker rm -f $container_id ; \
+      done ; \
     displayName: 'Remove running container'
   - script: docker run --restart=always -d -v log:/app/log -p $(EXTERNAL_PORT):$(INTERNAL_PORT) $(DOCKERHUB_USER)/$(IMAGE):${{ parameters.tag }}
     displayName: 'Start Container'
